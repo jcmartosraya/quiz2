@@ -14,9 +14,23 @@ exports.load = function(req,res,next,quizId){
 
 // GET /quizes
 exports.index = function(req, res) {
-  models.Quiz.findAll().then(function(quizes) {
+
+  if (req.query.search===undefined){
+
+	models.Quiz.findAll().then(function(quizes) {
     res.render('quizes/index.ejs', { quizes: quizes});
-  })
+	});
+  }else {
+
+   var busq="%" + req.query.search + "%";
+   busq=busq.replace(" ","%");
+
+	models.Quiz.findAll({where: ["pregunta like ?", busq],order:[["pregunta","ASC"]]}).then(function(quizes) {
+    res.render('quizes/index.ejs', { quizes: quizes});
+  
+  
+	});
+  }
 };
 
 // GET /quizes/:id
