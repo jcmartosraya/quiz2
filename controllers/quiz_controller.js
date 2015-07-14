@@ -106,12 +106,6 @@ exports.update = function(req, res) {
   );
 };
 
-// DELETE /quizes/:id
-exports.destroy =function(req,res){
-		res.redirect('/quizes');
-	}).catch(function(error){next(error)});
-};
-
 exports.author = function(req,res){
 	res.render('author/author', { errors:[]});
 };
