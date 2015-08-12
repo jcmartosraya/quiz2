@@ -30,6 +30,32 @@ app.use(session());
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+//tiempo de sesion
+ app.use(function(req, res, next) {
+	 
+     if(req.session.user){
+	
+		 var fecha = new Date();
+		 
+		var ahora = fecha.getTime();
+				
+		if (!req.session.tiempo){
+             req.session.tiempo=ahora;
+        }else {
+            if (ahora-req.session.tiempo > 120000){
+                delete req.session.user; 
+		
+            }else{
+                req.session.tiempo=ahora;
+            }
+        }
+		
+    }
+	
+    next();
+});
+
+
 //Helpers dinámicos:
 app.use(function(req,res,next){
 	

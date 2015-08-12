@@ -119,3 +119,29 @@ exports.destroy =function(req,res){
 exports.author = function(req,res){
 	res.render('author/author', { errors:[]});
 };
+var respuestas ={preguntas:0,comentarios:0,ccoment:0};
+exports.calculo=function(req,res,next){
+	models.Quiz.count().then(function(np){
+	
+		respuestas.preguntas=np;
+		
+		return models.Comment.count();
+	
+	}).then(function(nc){
+		respuestas.comentarios=nc;
+	
+		return models.Comment.PreguntasConComentario();
+
+	}).then(function(ccs){
+		respuestas.ccoment=ccs;
+	}).finally(function(){
+	
+		next();
+	});
+	
+
+};
+exports.estadisticas = function(req,res){
+     console.log("Dato1:" + respuestas.preguntas)
+	res.render('quizes/statistics', {a:respuestas,errors:[]});
+};

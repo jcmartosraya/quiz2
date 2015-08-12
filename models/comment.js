@@ -12,5 +12,15 @@ module.exports = function(sequelize, DataTypes) {
 		  defaultValue:false
 	  }
     }
-  );
+  ,
+  {
+    classMethods: {
+      
+      PreguntasConComentario: function () {
+        return this.aggregate('QuizId','count').then('success',function(count) { 
+		return count; 
+		}) 
+      }
+    }
+  });
 }
